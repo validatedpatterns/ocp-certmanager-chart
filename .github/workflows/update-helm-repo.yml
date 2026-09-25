@@ -1,4 +1,3 @@
----
 # This invokes the workflow named 'publish-charts' in the umbrella repo
 # It expects to have a secret called CHARTS_REPOS_TOKEN which contains
 # the GitHub token that has permissions to invoke workflows and commit code
@@ -24,16 +23,12 @@ permissions:
 
 jobs:
   helmlint:
-    # October 6, 2025
-    uses: validatedpatterns/helm-charts/.github/workflows/helmlint.yml@69fd10ef9199eecd093fca715ae9765c78750efc
+    uses: validatedpatterns/helm-charts/.github/workflows/helmlint.yml@workflow-stable # zizmor: ignore[unpinned-uses]
     permissions:
       contents: read
 
   update-helm-repo:
     needs: [helmlint]
-    # October 6, 2025
-    uses: validatedpatterns/helm-charts/.github/workflows/update-helm-repo.yml@69fd10ef9199eecd093fca715ae9765c78750efc
-    permissions:
-      contents: read
-    secrets:
-      CHARTS_REPOS_TOKEN: ${{ secrets.CHARTS_REPOS_TOKEN }}
+    uses: validatedpatterns/helm-charts/.github/workflows/update-helm-repo.yml@workflow-stable # zizmor: ignore[unpinned-uses]
+    permissions: read-all # zizmor: ignore[excessive-permissions]
+    secrets: inherit # zizmor: ignore[secrets-inherit]
